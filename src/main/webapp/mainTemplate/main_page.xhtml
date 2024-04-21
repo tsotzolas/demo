@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      >
+<h:head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="author" content="PEARL SA"/>
+    <title><ui:insert name="title"></ui:insert></title>
+    <!--<script src="http://code.jquery.com/jquery-1.9.0.js"></script>-->
+    <!--<script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>-->
+    <!--<script type="text/javascript" src="#{request.contextPath}/mainTemplate/script.js"></script>-->
+
+    <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/icons/favicon.ico" />
+    <link rel="stylesheet" href="#{request.contextPath}/mainTemplate/style.css" type="text/css" media="screen" />
+    <!--[if IE 6]><link rel="stylesheet" href="#{request.contextPath}/mainTemplate/style.ie6.css" type="text/css" media="screen" /><![endif]-->
+    <!--[if IE 7]><link rel="stylesheet" href="#{request.contextPath}/mainTemplate/style.ie7.css" type="text/css" media="screen" /><![endif]-->
+    <!--<link type="text/css" rel="stylesheet" href="/theme.css?ln=primefaces-#{usersBean.user.idtblThemes.theme}" />-->
+    <!--<h:outputStylesheet library="css" name="style.css" />-->
+
+    <style>.art-content .art-postcontent-0 .layout-item-0 { padding-right: 10px;padding-left: 10px;  }
+    .ie7 .art-post .art-layout-cell {border:none !important; padding:0 !important; }
+    .ie6 .art-post .art-layout-cell {border:none !important; padding:0 !important; }
+    </style>
+
+
+    <header>
+
+    </header>
+
+</h:head>
+<h:body>
+    <div id="art-main">
+        <ui:insert name="topMenu"></ui:insert>
+            <div class="art-sheet clearfix ">
+               
+                                <article class="art-post art-article">
+                                    
+                                        
+                                                <div class="ui-g" style="width: 100%;align-content: center" >
+                                                    <ui:insert name="content"></ui:insert>
+                                                </div>
+
+                                    
+                                </article>
+                           
+               
+            </div>
+    </div>
+
+        <footer class="art-footer">
+            <div class="container">
+                <div class="art-layout-cell art-content" style="display: inline-block; text-align: left; width: 100%">
+            <p:clock pattern="dd.MMM.yyyy HH:mm:ss" mode="server"/>
+        </div>
+                <!--<p:dock position="bottom" halign="center" proximity="30">-->
+                        <!--<p:menuitem value="Map" icon="/resources/images/globe.png" url="/webContent/positrexmap.jsf?faces-redirect=true"></p:menuitem>-->
+                        <!--<p:menuitem value="Mission" icon="/resources/images/icon-trains.png" url="/webContent/missions.jsf?faces-redirect=true"></p:menuitem>-->
+                        <!--<p:menuitem value="Calendar" icon="/resources/images/calendar.png" url="/webContent/missionscalendar.jsf?faces-redirect=true"></p:menuitem>-->
+                        <!--<p:menuitem value="Messages" icon="/resources/images/email.png" url="mailto:#"></p:menuitem>-->
+                    <!--</p:dock>-->
+              <!--  <p:stack icon="/resources/images/stack.png" expanded="false" transient="true">
+                        <p:menuitem value="Map" icon="/resources/images/globe.png" url="/webContent/positrexmap.jsf?faces-redirect=true"></p:menuitem>
+                        <p:menuitem value="Mission" icon="/resources/images/icon-trains.png" url="/webContent/missions.jsf?faces-redirect=true"></p:menuitem>
+                        <p:menuitem value="Calendar" icon="/resources/images/calendar.png" url="/webContent/missionscalendar.jsf?faces-redirect=true"></p:menuitem>
+                        <p:menuitem value="Messages" icon="/resources/images/email.png" url="mailto:#"></p:menuitem>
+                    </p:stack>-->
+               <!--<div class="text-center mt-4">
+                    
+                    <h3>Copyright © 2018 PEARL SA</h3>
+                </div>-->
+            </div>
+        </footer>
+</h:body>
+</html>

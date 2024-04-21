@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a4j="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">TEST+</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define><!--  #{request.contextPath}/  -->
+    <!-- <ui:define name="topMenu"><ui:include src="/menus/topMenu.xhtml"></ui:include></ui:define> -->
+    <ui:define name="content">
+<div id="content">
+    <h1>Send an email</h1>
+    <h:form id="email">
+        <!-- Instructions for the user -->
+        <div>
+            Send someone an email
+        </div>
+
+        <!-- Input box for the email parameters, plus a button to submit, and reset -->
+        <!-- These are bound using EL to our CDI beans -->
+        <div>
+            To:
+            <p:inputText id="to" value="#{EmailBean.to}"
+                         required="true" size="20"
+            />
+            From:
+            <p:inputText id="from" value="#{EmailBean.from}"
+                         required="true" size="20"
+            />
+            Subject:
+            <p:inputText id="subject" value="#{EmailBean.subject}"
+                         required="true" size="20"
+            />
+            Body:
+            <p:inputTextarea id="body" value="#{EmailBean.body}"
+                             required="true" rows="5"
+            />
+            <h:commandButton id="sendButton" value="Send"
+                             action="#{EmailBean.send}"/>
+        </div>
+        <div>
+            <h:commandButton id="restartButton" value="Reset" type="reset"/>
+        </div>
+    </h:form>
+</div>
+    </ui:define>
+
+
+    <!--Είναι για το security για να βλέπουμε αν έχει πρόσβαση στην σελίδα ή όχι-->
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{LoginBean.redirect('email')}"/>
+    </f:metadata>
+
+</ui:composition>

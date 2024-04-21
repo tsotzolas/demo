@@ -1,0 +1,198 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a4j="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">TEST+</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define><!--  #{request.contextPath}/  -->
+    <!-- <ui:define name="topMenu"><ui:include src="/menus/topMenu.xhtml"></ui:include></ui:define> -->
+    <ui:define name="content">
+        <h:form id="form">
+            <div class="p-grid crud-demo">
+                <div class="p-col-12">
+                    <div class="card">
+                        <p:growl id="messages" showDetail="true"/>
+
+                        <p:toolbar styleClass="p-mb-4">
+                            <p:toolbarGroup>
+<!--                                <p:commandButton value="New" icon="pi pi-plus" actionListener="#{userBean.openNew}"-->
+<!--                                                 update="insertForm" oncomplete="PF('addDlg').show()"-->
+<!--                                                 styleClass="ui-button-success" style="margin-right: .5rem"/>-->
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <p:dataTable id="dtusers"
+                                     widgetVar="dtusers"
+                                     var="record"
+                                     value="#{userBean.userList}"
+                                     reflow="true"
+                                     rowIndexVar="it"
+                                     rowKey="#{record.iduser}" paginator="true" rows="10" rowSelectMode="add"
+                                     paginatorPosition="bottom">
+
+                            <f:facet name="header">
+                                <div class="products-table-header">
+                                    <span style="font-weight: bold">Users</span>
+
+                                    <span class="filter-container ui-input-icon-left"
+                                          style="position: absolute;right: 40px;">
+                                        <i class="pi pi-search" style="margin-left: 25px"></i>
+                                        <p:inputText id="globalFilter" onkeyup="PF('dtusers').filter()"
+                                                     style="margin-left: 20px"
+                                                     placeholder="Search"/>
+                                    </span>
+                                </div>
+                            </f:facet>
+
+                            <p:column headerText="No" style="width: 60px!important;">
+                                <h:outputText value="#{it+1}"/>
+                            </p:column>
+
+                            <p:column headerText="Username"
+                                      sortBy="#{record.username}"
+                                      filterBy="#{record.username}">
+                                <h:outputText value="#{record.username}"/>
+                            </p:column>
+
+                            <p:column headerText="Nickname"
+                                      sortBy="#{record.idperson.nickname}"
+                                      filterBy="#{record.idperson.nickname}">
+                                <h:outputText value="#{record.idperson.nickname}"/>
+                            </p:column>
+
+                            <p:column headerText="Name"
+                                      sortBy="#{record.idperson.personLname}"
+                                      filterBy="#{record.idperson.personLname}">
+                                <h:outputText value="#{record.idperson.personLname} #{record.idperson.personFname}"/>
+                            </p:column>
+
+                            <p:column headerText="Status"
+                                      sortBy="#{userBean.userStatusMap.get(record.userStatus)}"
+                                      filterBy="#{userBean.userStatusMap.get(record.userStatus)}">
+                                <h:outputText value="#{userBean.userStatusMap.get(record.userStatus)}"/>
+                            </p:column>
+
+                            <p:column headerText="Role"
+                                      sortBy="#{record.idrole.roleDesc}"
+                                      filterBy="#{record.idrole.roleDesc}">
+                                <h:outputText value="#{record.idrole.roleDesc}"/>
+                            </p:column>
+
+                            <p:column exportable="false" headerText="Actions" style="width: 80px; text-align: center">
+                                <p:commandButton icon="pi pi-pencil"
+                                                 update="updateForm"
+                                                 oncomplete="PF('updateDlg').show()"
+                                                 styleClass="edit-button rounded-button ui-button-success"
+                                                 process="@this"
+                                                 action="#{userBean.copyObject}">
+                                    <f:setPropertyActionListener value="#{record}"
+                                                                 target="#{userBean.user}"/>
+                                </p:commandButton>
+<!--                                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" style="margin-left: 10px"-->
+<!--                                                 process="@this" oncomplete="PF('deleteUserDialog').show()">-->
+<!--                                    <f:setPropertyActionListener value="#{record}"-->
+<!--                                                                 target="#{userBean.user}"/>-->
+<!--                                </p:commandButton>-->
+                            </p:column>
+                        </p:dataTable>
+
+
+                        <p:confirmDialog widgetVar="deleteUserDialog" showEffect="fade" width="300"
+                                         message="Delete the wallet?" header="Confirm" severity="warn">
+                            <p:commandButton value="Yes" icon="pi pi-check"
+                                             actionListener="#{userBean.delete}" process="@this"
+                                             oncomplete="PF('deleteUserDialog').hide()"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
+                                             icon="pi pi-times" onclick="PF('deleteUserDialog').hide()"/>
+                        </p:confirmDialog>
+
+                        <p:confirmDialog global="true" showEffect="fade" width="300">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"
+                                             icon="pi pi-check"/>
+                            <p:commandButton value="No" type="button"
+                                             styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times"/>
+                        </p:confirmDialog>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+
+        <p:dialog header="Edit User" showEffect="fade" modal="true" widgetVar="updateDlg" width="500px"
+                  responsive="true">
+            <h:form id="updateForm">
+                <p:outputPanel class="ui-fluid">
+                    <p:outputPanel rendered="#{not empty userBean.user}">
+                        <div class="p-field">
+                            <p:outputLabel  value="Username"/><br/>
+                            <p:inputText value="#{userBean.user.username}" style="margin-top: 10px" disabled="true" />
+                        </div>
+
+                        <br/>
+
+                        <div class="p-field">
+                            <p:outputLabel  value="Person"/><br/>
+                            <p:inputText value="#{userBean.user.idperson.personLname} #{userBean.user.idperson.personFname}" style="margin-top: 10px" disabled="true" />
+                        </div>
+
+                        <br/>
+
+
+                        <div class="p-field">
+                            <p:outputLabel required="true" value="Role" class="required"/> <br/>
+                            <p:selectOneMenu value="#{userBean.user.idrole}" converter="omnifaces.SelectItemsConverter"
+                                             required="true" requiredMessage="Resouce currency must not be null">
+                                <f:selectItem itemLabel=" - Select Role - " noSelectionOption="true"/>
+                                <f:selectItems value="#{userBean.roleList}"
+                                               var="role"
+                                               itemLabel="#{role.roleDesc}"
+                                               itemValue="#{role}"/>
+                            </p:selectOneMenu>
+                        </div>
+
+                        <br/>
+
+                        <div class="p-field">
+                            <p:outputLabel  value="Status" class="required"/><br/>
+<!--                            <p:inputText value="#{userBean.user.userStatus}" style="margin-top: 10px" disabled="true" />-->
+                            <p:selectOneMenu value="#{userBean.user.userStatus}" converter="javax.faces.Integer">
+                                <f:selectItem itemLabel="Active" itemValue="2"/>
+                                <f:selectItem itemLabel="Disabled" itemValue="1"/>
+                                <f:selectItem itemLabel="Deleted" itemValue="0"/>
+                            </p:selectOneMenu>
+                        </div>
+
+                        <br/>
+
+
+                    </p:outputPanel>
+                </p:outputPanel>
+
+                <p:outputPanel style="margin-top: 10px">
+                    <p:commandButton value="Save" icon="pi pi-check" action="#{userBean.update}"
+                                     update=":form"
+                                     oncomplete="PF('updateDlg').hide()"/>
+
+                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('updateDlg').hide()"
+                                     style="margin-left: 10px"
+                                     class="ui-button-secondary"/>
+                </p:outputPanel>
+
+            </h:form>
+        </p:dialog>
+
+
+    </ui:define>
+
+
+    <!--Είναι για το security για να βλέπουμε αν έχει πρόσβαση στην σελίδα ή όχι-->
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginBean.redirect('wallet')}"/>
+    </f:metadata>
+
+</ui:composition>

@@ -1,0 +1,224 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">PEARL SA</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define><!--  #{request.contextPath}/  -->
+  <!-- <ui:define name="topMenu"><ui:include src="/menus/topMenu.xhtml"></ui:include></ui:define> -->
+    <ui:define name="content">
+
+<!--        <p:panel header="Administration Area" style="padding: 5px;margin: 5px">-->
+<div class="card">
+    <h3>Administration Area</h3>
+
+            <h:form id="form">
+
+                <p:growl id="msg" showDetail="true" life="3000">
+                    <p:autoUpdate/>
+                </p:growl>
+
+
+                <div class=" info">
+                    First <b>select a role</b> and then <b>add pages</b> to the role.
+                    <p>If you want to <b>hide elements</b> from a page select the appropriate element in the page</p>
+
+
+                </div>
+                <div class="ui-g">
+                    <p:outputPanel id="role" style="margin-top: 10px">
+                        <p:selectOneMenu value="#{rolePageElementBean.role}" style="width:100%"
+                                         converter="omnifaces.SelectItemsConverter"
+                        >
+                            <p:ajax event="change" listener="#{rolePageElementBean.onRoleSelect}" update="form"/>
+                            <f:selectItem itemLabel=" - Select role - " noSelectionOption="true"/>
+                            <f:selectItems value="#{rolePageElementBean.rolesList}"
+                                           var="role"
+                                           itemLabel="#{role.roleDesc}"
+                                           itemValue="#{role}"/>
+
+
+                        </p:selectOneMenu>
+                    </p:outputPanel>
+
+                </div>
+                <hr/>
+                <p:outputPanel id="fromSelect" >
+                    <div class=" ui-g">
+                        <div class="ui-g-6">
+
+                            <!--<p:panel header="Available Pages">-->
+                            <p:dataTable id="sourceTable"
+                                         value="#{rolePageElementBean.sourcePagesList}"
+                                         widgetVar="sourceW"
+                                         style="width: 100%;"
+                                         var="source1"
+                                         scrollable="true" scrollHeight="200"
+                                         rowKey="#{source1.idpage}"
+                                         selectionMode="single"
+                                         selection="#{rolePageElementBean.selectedPage}"
+                            >
+                                <f:facet name="header">
+                                    Available Pages
+                                </f:facet>
+                                <!--<p:selectOneListbox id="sourceTable" value="#{rolePageElementBean.selectedPage}"-->
+                                <!--widgetVar="sourceW"-->
+                                <!--style="width: 100%"-->
+                                <!--converter="pageConverter"-->
+                                <!--var="source1"-->
+                                <!--onclick="targetW.unselectAllRows()"-->
+
+                                <p:ajax process="@this"
+                                        update="form:sourceTable form:targetTable"
+                                        event="rowDblselect"
+                                        listener="#{rolePageElementBean.onDBSelection(rolePageElementBean.selectedPage,rolePageElementBean.targetPagesList,rolePageElementBean.sourcePagesList)}"/>
+
+                                <p:column filterBy="#{source1.pageName}">
+                                    <h:outputText value="#{source1.pageName} (#{source1.pageDesc})"/>
+                                </p:column>
+                            </p:dataTable>
+
+                            <!--</p:panel>-->
+                        </div>
+
+                        <div class="ui-g-6">
+
+                            <p:dataTable id="targetTable"
+                                         value="#{rolePageElementBean.targetPagesList}"
+                                         widgetVar="targetW"
+                                         style="width: 100%;"
+                                         scrollable="true" scrollHeight="200"
+                                         var="target"
+                                         filterEvent="enter"
+                                         rowKey="#{target.idpage}"
+                                         selectionMode="single"
+                                         selection="#{rolePageElementBean.selectedPage}"
+                            >
+
+                                <f:facet name="header">
+                                    Selected Pages
+                                </f:facet>
+
+                                <!--<p:column selectionMode="multiple" style="width:16px;text-align:center"/>-->
+                                <p:ajax process="@this"
+                                        update="form:sourceElementsTable form:targetElementsTable"
+                                        event="rowSelect"
+                                        listener="#{rolePageElementBean.onSelection(rolePageElementBean.selectedPage)}"/>
+
+                                <p:ajax process="@this"
+                                        update="form:sourceTable form:targetTable form:sourceElementsTable "
+                                        event="rowDblselect"
+                                        listener="#{rolePageElementBean.onDBSelection(rolePageElementBean.selectedPage,rolePageElementBean.sourcePagesList,rolePageElementBean.targetPagesList)}"/>
+                                <p:column filterBy="#{target.pageName}">
+                                    <h:outputText value="#{target.pageName} (#{target.pageDesc})"/>
+                                </p:column>
+                            </p:dataTable>
+
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="warning" style="margin-top: 20px">
+                        <b>Selected elements </b> are elements that are not available to the user
+                    </div>
+                    <div class="ui-g">
+
+                        <div class="ui-g-6">
+
+                            <p:dataTable id="sourceElementsTable"
+                                         value="#{rolePageElementBean.sourceElementsList}"
+                                         widgetVar="sourceWE"
+                                         style="width: 100%;"
+                                         var="sourceE"
+                                         rowKey="#{sourceE.idelement}"
+                                         selectionMode="single"
+                                         selection="#{rolePageElementBean.selectedElement}"
+                            >
+                                <f:facet name="header">
+                                    Available Elements
+                                </f:facet>
+
+                                <p:ajax process="@this"
+                                        update="form:targetElementsTable form:sourceElementsTable"
+                                        event="rowDblselect"
+                                        listener="#{rolePageElementBean.onDBElementsSelection(rolePageElementBean.selectedElement,rolePageElementBean.targetElementsList,rolePageElementBean.sourceElementsList)}"/>
+
+                                <p:column>
+                                    <h:outputText value="#{sourceE.elementName} (#{sourceE.elementDesc})"/>
+                                </p:column>
+                            </p:dataTable>
+
+                        </div>
+
+                        <div class="ui-g-6">
+
+                            <p:dataTable id="targetElementsTable"
+                                         value="#{rolePageElementBean.targetElementsList}"
+                                         widgetVar="targetWE"
+                                         style="width: 100%;"
+                                         var="targetE"
+                                         rowKey="#{targetE.idelement}"
+                                         selectionMode="single"
+                                         selection="#{rolePageElementBean.selectedElement}"
+                            >
+
+                                <f:facet name="header">
+                                    Selected Elements (Not available elements for users)
+                                </f:facet>
+
+                                <!--<p:ajax process="@this"-->
+                                <!--update="form:sourceElementsTable form:targetElementsTable"-->
+                                <!--event="rowSelect"-->
+                                <!--listener="#{rolePageElementBean.onSelection(rolePageElementBean.selectedPage)}"/>-->
+
+                                <p:ajax process="@this"
+                                        update="form:sourceElementsTable form:targetElementsTable"
+                                        event="rowDblselect"
+                                        listener="#{rolePageElementBean.onDBElementsSelection(rolePageElementBean.selectedElement,rolePageElementBean.sourceElementsList,rolePageElementBean.targetElementsList)}"/>
+
+                                <p:column>
+                                    <h:outputText value="#{targetE.elementName} (#{targetE.elementDesc})"/>
+                                </p:column>
+
+                                <!--<f:facet name="footer">-->
+                                <!--<f:facet name="footer">-->
+                                <!--<p:commandButton process="targetElementsTable"-->
+                                <!--icon="fa fa-fw fa-save"-->
+                                <!--value="Save Elements"-->
+                                <!--update="form:msg"-->
+                                <!--actionListener="#{rolePageElementBean.addElementsToModel}"-->
+                                <!--/>-->
+                                <!--</f:facet>-->
+                                <!--</f:facet>-->
+
+                            </p:dataTable>
+
+                        </div>
+                    </div>
+                    <hr/>
+<!--                    <p:commandButton process="@form" style="width: 120px;height: 50px"-->
+<!--                                     icon="fa fa-fw fa-save"-->
+<!--                                     value="Save"-->
+<!--                                     update="form:msg"-->
+<!--                                     actionListener="#{rolePageElementBean.addElementsToModel}"-->
+<!--                    />-->
+
+
+                    <!--</div>-->
+                </p:outputPanel>
+            </h:form>
+<!--        </p:panel>-->
+    </div>
+
+    </ui:define>
+
+
+    <!--Είναι για το security για να βλέπουμε αν έχει πρόσβαση στην σελίδα ή όχι-->
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginBean.redirect('rolePageElement')}"/>
+    </f:metadata>
+
+</ui:composition>

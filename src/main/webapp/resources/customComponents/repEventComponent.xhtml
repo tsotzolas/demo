@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+
+    <cc:interface>
+        <cc:attribute name="eventTime" required="true"/>
+        <cc:attribute name="eventOwner"/>
+        <cc:attribute name="text"/>
+        <cc:attribute name="color"/>
+        <cc:attribute name="imagePath"/>
+        <cc:attribute name="imageLibrary"/>
+        <cc:attribute name="fontawesome" required="true"/>
+        <cc:attribute name="station" required="true"/>
+        <cc:attribute name="mission" required="true"/>
+        <cc:attribute name="renderButtonSend" required="true"/>
+        <cc:attribute name="renderButtonEdit" required="true"/>
+        <cc:attribute name="actionMethodSend" method-signature="java.lang.String action([Ljava.lang.Object;)" required="false"/>
+        <cc:attribute name="actionMethodEdit" method-signature="java.lang.String action([Ljava.lang.Object;)" required="false"/>
+
+    </cc:interface>
+
+    <cc:implementation>
+
+<!--        <h:inputHidden value="#{cc.attrs.repEventId}"/>-->
+
+        <div class="ui-g-3" style="background-color: #{cc.attrs.color}">
+            <span class="event-time" style="font-size:15px;font-weight:bold">#{cc.attrs.eventTime}</span>
+            <i class="fa #{cc.attrs.fontawesome}" style="font-weight:bold;background-color: #{cc.attrs.color}"></i>
+        </div>
+
+        <div class="ui-g-9"  style="background-color: #{cc.attrs.color}">
+
+            <div class="ui-g-6">
+                <span class="event-owner" style="font-size:15px">#{cc.attrs.station}</span>
+                <span class="event-text" style="font-weight: bold" >#{cc.attrs.text} <br/>(#{cc.attrs.mission})</span>
+            </div>
+            <div class="ui-g-6">
+                <div class="ui-g-6" style="text-align: right">
+                    <p:commandLink
+                            ajax="true"
+                            rendered="#{cc.attrs.renderButtonEdit ne true and cc.attrs.renderButtonSend ne true}"
+                            style="text-align: center;background-repeat: repeat; width: 60px"
+                            actionListener="#{cc.attrs.actionMethodEdit}"
+                            title="Edit Event"
+                    >
+                        <h:graphicImage name="/icons/edit.png" style="width: 22px"
+                                        title="Edit Event"/>
+                    </p:commandLink>
+                </div>
+                <div class="ui-g-6" style="text-align: center">
+                    <p:commandLink ajax="false"
+                                   actionListener="#{cc.attrs.actionMethodSend}"
+                                   rendered="#{cc.attrs.renderButtonSend ne true}"
+                                   title="Send event to Cosco."
+                    >
+                        <h:graphicImage name="/icons/send_icon.png" style="width: 30px"
+                                        title="Send Event to Cosco."/>
+                        <p:confirm header="Confirmation" message="Are you sure?"
+                                   icon="fa fa-fw fa-exclamation-triangle"/>
+                    </p:commandLink>
+                </div>
+            </div>
+            <!--            <div class="event-content">-->
+            <!--                <p:commandButton action="#{cc.attrs.action}" value="#{cc.attrs.actionValue}" />-->
+            <!--&lt;!&ndash;                <p:graphicImage name="#{cc.attrs.imagePath}" style="width: 60px"&ndash;&gt;-->
+            <!--&lt;!&ndash;                                library="#{cc.attrs.imageLibrary}"/>&ndash;&gt;-->
+            <!--            </div>-->
+        </div>
+
+
+    </cc:implementation>
+
+</h:body>
+</html>

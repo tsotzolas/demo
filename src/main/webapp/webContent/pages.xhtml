@@ -1,0 +1,177 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a4j="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">TEST+</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <div class="p-grid crud-demo">
+                <div class="p-col-12">
+                    <div class="card">
+                        <p:growl id="messages" showDetail="true"/>
+
+                        <p:toolbar styleClass="p-mb-4">
+                            <p:toolbarGroup>
+                                <p:commandButton value="New" icon="pi pi-plus" actionListener="#{pagesBean.openNew}"
+                                                 update="insertForm" oncomplete="PF('addDlg').show()"
+                                                 styleClass="ui-button-success" style="margin-right: .5rem"/>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <p:dataTable id="dt-pages"
+                                     widgetVar="dtPages"
+                                     var="record"
+                                     value="#{pagesBean.pagesList}"
+                                     reflow="true"
+                                     rowIndexVar="it"
+                                     rowKey="#{record.id}" paginator="true" rows="10" rowSelectMode="add"
+                                     paginatorPosition="bottom">
+
+                            <f:facet name="header">
+                                <div class="products-table-header">
+                                    <span style="font-weight: bold">Pages</span>
+
+                                    <span class="filter-container ui-input-icon-left"
+                                          style="position: absolute;right: 40px;">
+                                        <i class="pi pi-search" style="margin-left: 25px"></i>
+                                        <p:inputText id="globalFilter" onkeyup="PF('dtPages').filter()"
+                                                     style="margin-left: 20px"
+                                                     placeholder="Search"/>
+                                    </span>
+                                </div>
+                            </f:facet>
+
+                            <p:column headerText="No" style="width: 60px!important;">
+                                <h:outputText value="#{it+1}"/>
+                            </p:column>
+
+                            <p:column headerText="Page Name"
+                                      sortBy="#{record.pageName}"
+                                      filterBy="#{record.pageName}">
+                                <h:outputText value="#{record.pageName}"/>
+                            </p:column>
+
+                            <p:column headerText="Page Description"
+                                      sortBy="#{record.pageDesc}"
+                                      filterBy="#{record.pageDesc}">
+                                <h:outputText value="#{record.pageDesc}"/>
+                            </p:column>
+
+                            <p:column exportable="false" headerText="Actions" style="width: 80px; text-align: center">
+                                <p:commandButton icon="pi pi-pencil"
+                                                 update="updateForm"
+                                                 oncomplete="PF('updateDlg').show()"
+                                                 styleClass="edit-button rounded-button ui-button-success"
+                                                 process="@this"
+                                                 action="#{pagesBean.copyObject}">
+                                    <f:setPropertyActionListener value="#{record}"
+                                                                 target="#{pagesBean.page}"/>
+                                </p:commandButton>
+<!--                                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" style="margin-left: 10px"-->
+<!--                                                 process="@this" oncomplete="PF('deletePageDialog').show()">-->
+<!--                                    <f:setPropertyActionListener value="#{record}"-->
+<!--                                                                 target="#{pagesBean.page}"/>-->
+<!--                                </p:commandButton>-->
+                            </p:column>
+                        </p:dataTable>
+
+<!--                        <p:confirmDialog widgetVar="deletePageDialog" showEffect="fade" width="300"-->
+<!--                                         message="Delete the page?" header="Confirm" severity="warn">-->
+<!--                            <p:commandButton value="Yes" icon="pi pi-check"-->
+<!--                                             actionListener="#{pagesBean.delete}" process="@this"-->
+<!--                                             oncomplete="PF('deletePageDialog').hide()"/>-->
+<!--                            <p:commandButton value="No" type="button" styleClass="ui-button-secondary"-->
+<!--                                             icon="pi pi-times" onclick="PF('deletePageDialog').hide()"/>-->
+<!--                        </p:confirmDialog>-->
+
+                        <p:confirmDialog global="true" showEffect="fade" width="300">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"
+                                             icon="pi pi-check"/>
+                            <p:commandButton value="No" type="button"
+                                             styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times"/>
+                        </p:confirmDialog>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+
+        <p:dialog header="Insert New Page" width="500px"
+                  showEffect="fade" modal="true" widgetVar="addDlg"
+                  responsive="true">
+            <h:form id="insertForm">
+                <p:outputPanel class="ui-fluid">
+
+                    <div class="p-field">
+                        <p:outputLabel required="true" value="Page Name"/><br/>
+                        <p:inputText id="name" value="#{pagesBean.page.pageName}" style="margin-top: 10px"
+                                     requiredMessage="Page Name must not be empty" required="true"/>
+                    </div>
+
+                    <div class="p-field">
+                        <p:outputLabel required="true" value="Page Description"/><br/>
+                        <p:inputText id="desc" value="#{pagesBean.page.pageDesc}" style="margin-top: 10px"
+                                     requiredMessage="Page Description must not be empty" required="true"/>
+                    </div>
+                </p:outputPanel>
+
+                <p:outputPanel style="margin-top: 10px">
+                <p:commandButton value="Insert"
+                                 icon="pi pi-check"
+                                 action="#{pagesBean.insert()}"
+                                 oncomplete="if (args &amp;&amp; !args.validationFailed) PF('addDlg').hide();"
+                                 update="form"/>
+                </p:outputPanel>
+
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Update Page" showEffect="fade" modal="true" widgetVar="updateDlg" width="500px"
+                  responsive="true">
+            <h:form id="updateForm">
+                <p:outputPanel class="ui-fluid">
+                    <p:outputPanel rendered="#{not empty pagesBean.page}">
+                        <div class="p-field">
+                            <p:outputLabel required="true" value="Page Name"/><br/>
+                            <p:inputText id="nameUpd" value="#{pagesBean.page.pageName}" style="margin-top: 10px"
+                                         requiredMessage="Page Name must not be empty" required="true"/>
+                        </div>
+                        <div class="p-field">
+                            <p:outputLabel required="true" value="Page Description"/><br/>
+                            <p:inputText id="descUpd" value="#{pagesBean.page.pageDesc}" style="margin-top: 10px"
+                                         requiredMessage="Page Description must not be empty" required="true"/>
+                        </div>
+                    </p:outputPanel>
+                </p:outputPanel>
+
+                <p:outputPanel style="margin-top: 10px">
+                    <p:commandButton value="Save" icon="pi pi-check" action="#{pagesBean.update}"
+                                     update=":form"
+                                     oncomplete="PF('updateDlg').hide()"/>
+
+                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('updateDlg').hide()"
+                                     style="margin-left: 10px"
+                                     class="ui-button-secondary"/>
+                </p:outputPanel>
+
+            </h:form>
+        </p:dialog>
+
+
+    </ui:define>
+
+
+    <!--Είναι για το security για να βλέπουμε αν έχει πρόσβαση στην σελίδα ή όχι-->
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginBean.redirect('pages')}"/>
+    </f:metadata>
+
+</ui:composition>

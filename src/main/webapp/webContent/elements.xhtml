@@ -1,0 +1,197 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">PEARL SA</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define><!--  #{request.contextPath}/  -->
+    <!-- <ui:define name="topMenu"><ui:include src="/menus/topMenu.xhtml"></ui:include></ui:define> -->
+    <ui:define name="content">
+
+
+        <h:form id="form">
+            <div class="p-grid crud-demo">
+                <div class="p-col-12">
+                    <div class="card">
+                        <p:growl id="msgs1" showDetail="true" life="3000"/>
+
+                        <p:toolbar styleClass="p-mb-4">
+                            <p:toolbarGroup>
+                                <p:commandButton value="New" icon="pi pi-plus" actionListener="#{elementBean.openNew()}"
+                                                 update="eisagogiPopUp" oncomplete="PF('dlg3').show()"
+                                                 styleClass="ui-button-success" style="margin-right: .5rem"/>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+
+                        <p:dataTable id="pageTable" value="#{elementBean.elementsList}" var="record" rowIndexVar="it"
+                                     styleClass="rf-dt stable"
+                                     widgetVar="pageTable" selection="#{elementBean.element}"
+                                     filterEvent="enter"
+                                     rowKey="#{record}">
+
+                            <f:facet name="header">
+                                <div class="products-table-header">
+                                    <span style="font-weight: bold">Elements</span>
+
+                                    <span class="filter-container ui-input-icon-left"
+                                          style="position: absolute;right: 40px;">
+                                        <i class="pi pi-search" style="margin-left: 25px"></i>
+                                        <p:inputText id="globalFilter" onkeyup="PF('dtRoles').filter()"
+                                                     style="margin-left: 20px"
+                                                     placeholder="Search"/>
+                                    </span>
+                                </div>
+                            </f:facet>
+
+                            <p:column headerText="No" style="width: 60px!important;">
+                                <h:outputText value="#{it+1}"/>
+                            </p:column>
+
+                            <p:column headerText="Element Name" sortBy="#{record.elementName}"
+                                      filterBy="#{record.elementName}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{record.elementName}"/>
+                            </p:column>
+
+                            <p:column headerText="Element Description" sortBy="#{record.elementDesc}"
+                                      filterBy="#{record.elementDesc}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{record.elementDesc}"/>
+                            </p:column>
+
+                            <p:column headerText="Element Page" sortBy="#{record.refPageId.pageName}"
+                                      filterBy="#{record.refPageId.pageName}"
+                                      filterMatchMode="contains">
+                                <h:outputText value="#{record.refPageId.pageName}"/>
+                            </p:column>
+
+
+                            <p:column exportable="false" headerText="Actions" style="width: 80px; text-align: center">
+                                <p:commandButton icon="pi pi-pencil"
+                                                 update="updatePopUp" action="#{elementBean.copyObject}"
+                                                 onclick="PF('dlg4').show()"
+                                                 styleClass="edit-button rounded-button ui-button-success"
+                                                 process="@this">
+                                    <f:setPropertyActionListener value="#{record}"
+                                                                 target="#{elementBean.element}"/>
+                                </p:commandButton>
+
+                                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                                 style="margin-left: 10px"
+                                                 process="@this" oncomplete="PF('deleteProductDialog').show()">
+                                    <f:setPropertyActionListener value="#{record}"
+                                                                 target="#{elementBean.element}"/>
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
+                                         message="Delete the element?" header="Confirm" severity="warn">
+                            <p:commandButton value="Yes" icon="pi pi-check"
+                                             actionListener="#{elementBean.delete}" process="@this"
+                                             oncomplete="PF('deleteProductDialog').hide()"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
+                                             icon="pi pi-times" onclick="PF('deleteProductDialog').hide()"/>
+                        </p:confirmDialog>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"
+                                             icon="ui-icon-check" update="form"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                                             icon="ui-icon-close"/>
+                        </p:confirmDialog>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+        <p:dialog header="Add new Element" widgetVar="dlg3" width="400" modal="true" closeOnEscape="true">
+
+
+            <p></p>
+            <h:form id="eisagogiPopUp">
+                <p:growl id="growl" sticky="false" showDetail="true" life="3000"/>
+                <h:panelGrid columns="2" cellpadding="5" id="rolesGrid">
+                    <h:outputLabel value="Element's Name"/>
+                    <p:inputText value="#{elementBean.element.elementName}" required="true"
+                                 requiredMessage="Element's Name must not be empty"/>
+
+                    <h:outputLabel value="Element's Description"/>
+                    <p:inputText value="#{elementBean.element.elementDesc}" required="true"
+                                 requiredMessage="Element's Description must not be empty"/>
+
+                    <h:outputLabel value="Element's Page"/>
+                    <p:selectOneMenu value="#{elementBean.element.refPageId}" style="width:100%" id="test1"
+                                     converter="omnifaces.SelectItemsConverter"
+                                     filter="true"
+                                     filterMatchMode="contains">
+                        <f:selectItem itemLabel=" - Select page - " noSelectionOption="true"/>
+                        <f:selectItems value="#{elementBean.pagesList}"
+                                       var="pag"
+                                       itemLabel="#{pag.pageName}"
+                                       itemValue="#{pag}"/>
+                    </p:selectOneMenu>
+
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Add Element"
+                                         action="#{elementBean.insert}"
+                                         oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg3').hide();"
+                                         update=":form"/>
+                    </f:facet>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+
+        <p:dialog header="Update Element" widgetVar="dlg4" width="400" modal="true" closeOnEscape="true">
+
+            <div class="info">
+                Update the element
+            </div>
+            <p></p>
+            <h:form id="updatePopUp">
+                <h:panelGrid columns="2" cellpadding="5" id="updaterolesGrid">
+                    <h:outputLabel value="Element Name"/>
+                    <p:inputText value="#{elementBean.element.elementName}" required="true"
+                                 requiredMessage="Page Name must not be empty"/>
+
+                    <h:outputLabel value="Element Description"/>
+                    <p:inputText value="#{elementBean.element.elementDesc}" required="true"
+                                 requiredMessage="Page Description must not be empty"/>
+
+                    <h:outputLabel value="Element Page"/>
+                    <p:selectOneMenu value="#{elementBean.element.refPageId}" style="width:100%"
+                                     converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel=" - Select page - " noSelectionOption="true"/>
+                        <f:selectItems value="#{elementBean.pagesList}"
+                                       var="pag"
+                                       itemLabel="#{pag.pageName}"
+                                       itemValue="#{pag}"/>
+                    </p:selectOneMenu>
+                    <f:facet name="footer">
+                        <p:commandButton value="Update"
+                                         action="#{elementBean.update}"
+                                         oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg4').hide();"
+                                         update="form"/>
+                    </f:facet>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+
+    </ui:define>
+
+
+    <!--Είναι για το security για να βλέπουμε αν έχει πρόσβαση στην σελίδα ή όχι-->
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginBean.redirect('elements')}"/>
+    </f:metadata>
+
+</ui:composition>

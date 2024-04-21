@@ -1,0 +1,98 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pm="http://primefaces.org/manhattan">
+
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{guestPreferences.setTheme(loginBean.user.theme)}"/>
+    </f:metadata>
+
+    <style type="text/css">
+        /*.sidebar-brand1 {*/
+        /*    opacity: 1;*/
+        /*    visibility: visible;*/
+        /*    transition: opacity .5s ease;*/
+        /*    font-weight: 900;*/
+        /*    font-size: 25px;*/
+        /*    letter-spacing: -1px;*/
+        /*    color: #031a61;*/
+        /*}*/
+
+        sidebar-brand {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity .5s ease;
+            font-weight: 900;
+            font-size: 25px;
+            letter-spacing: -1px;
+            color: #031a61;
+        }
+
+        .noble-ui-logo {
+            font-weight: 900;
+            font-size: 25px;
+            letter-spacing: -1px;
+            color: #031a61;
+        }
+
+        .noble-ui-logo span {
+            color: #727cf5;
+            font-weight: 300;
+        }
+
+    </style>
+
+
+    <div class="layout-sidebar" style="z-index: 3000">
+        <div class="layout-sidebar-logo">
+
+            <a href="../webContent/dashboard.xhtml" class="sidebar-brand1 noble-ui-logo d-block mb-2">
+                Drachma<span>Plus</span>
+            </a>
+
+            <!--            <a href="../webContent/mainNew.xhtml">-->
+            <!--                &lt;!&ndash;<p:graphicImage name="images/logo-manhattan.png" library="manhattan-layout" />&ndash;&gt;-->
+            <!--                &lt;!&ndash;<p:graphicImage name="images/pearl-rail.png" library="manhattan-layout" />&ndash;&gt;-->
+            <!--                <p:graphicImage name="#{loginBean.appimage}" library="manhattan-layout"/>-->
+
+            <!--            </a>-->
+            <a href="#" id="layout-sidebar-anchor" class="layout-sidebar-anchor" title="Toggle Menu"
+               style="margin-left: 10px">
+                <i class="pi "></i>
+                <!--                <p:graphicImage name="images/dashboard/bar.png" library="manhattan-layout"/>-->
+            </a>
+        </div>
+
+
+        <div class="nano">
+            <div class="nano-content sidebar-scroll-content">
+                <div class="layout-menu-container">
+                    <h:form id="menuform">
+                        <pm:menu>
+
+                            <p:submenu id="myMenu" label="My Test+" icon="pi pi-fw pi-briefcase"
+                                       >
+                                <p:menuitem id="dashBoard" value="DashBoard"
+                                            outcome="/webContent/dashboard"
+                                            />
+
+                                <p:menuitem id="role" value="Role"
+                                            outcome="/webContent/roles"
+                                />
+                            </p:submenu>
+
+
+
+
+                        </pm:menu>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ui:composition>

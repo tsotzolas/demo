@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/composite">
+
+<h:head>
+    <title><ui:insert name="title"></ui:insert></title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" href="#{request.contextPath}/resources/assets/css/main.css"/>
+    <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+</h:head>
+<h:body class="no-sidebar">
+    <div id="page-wrapper">
+
+        <!-- Header -->
+        <div id="header">
+
+            <!-- Inner -->
+            <div class="inner">
+                <header>
+                    <h3 style="color: white">Πληροφοριακό Σύστημα</h3>
+                    <h1><a href="#{request.contextPath}/webContent/basikaEfedros.xhtml" id="logo" style="font-family: Arial">Κατάταξης Νεοσυλλέκτων</a></h1>
+                   <!--<h5 style="margin-top: 20px "> <p:clock pattern="HH:mm:ss dd-MM-yyyy"></p:clock> </h5>-->
+                    <h5 style="alignment: center"><img width="50" height="50" src="#{request.contextPath}/resources/assets_aerial/css/images/1200px-HellenicArmySeal.svg.png" /></h5>
+
+                </header>
+
+            </div>
+
+             <!--Nav -->
+
+            <!--<ul>-->
+            <!--<li><a href="index.xhtml">Home</a></li>-->
+            <!--<li>-->
+            <!--<a href="#">Dropdown</a>-->
+            <!--<ul>-->
+            <!--<li><a href="#">Lorem ipsum dolor</a></li>-->
+            <!--<li><a href="#">Magna phasellus</a></li>-->
+            <!--<li><a href="#">Etiam dolore nisl</a></li>-->
+            <!--<li>-->
+            <!--<a href="#">And a submenu ;</a>-->
+            <!--<ul>-->
+            <!--<li><a href="#">Lorem ipsum dolor</a></li>-->
+            <!--<li><a href="#">Phasellus consequat</a></li>-->
+            <!--<li><a href="#">Magna phasellus</a></li>-->
+            <!--<li><a href="#">Etiam dolore nisl</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li><a href="#">Veroeros feugiat</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li><a href="left-sidebar.html">Left Sidebar</a></li>-->
+            <!--<li><a href="right-sidebar.html">Right Sidebar</a></li>-->
+            <!--<li><a href="no-sidebar.xhtml">No Sidebar</a></li>-->
+            <!--</ul>-->
+            <!--</nav>-->
+
+        </div>
+
+        <!-- Main -->
+
+        <div class="wrapper style">
+            <ui:insert name="topMenu"></ui:insert>
+            <!--<div class="container" >-->
+
+                    <!--&lt;!&ndash;<header>&ndash;&gt;-->
+                          <!--&lt;!&ndash;<h2><a href="#"></a></h2>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<p>&ndash;&gt;-->
+
+                        <!--&lt;!&ndash;</p>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</header>&ndash;&gt;-->
+
+                    <!--&lt;!&ndash;<p>&ndash;&gt;-->
+                  <!--<p>  </p>-->
+                <!--&lt;!&ndash;</p>&ndash;&gt;-->
+
+
+            <!--</div>-->
+
+        </div>
+
+        <div class="table" style="margin-left: 5px;margin-right: 5px;padding-bottom: 5px" >
+
+            <ui:insert name="content"></ui:insert>
+
+        </div>
+        <!--<div style="margin-left: 5px;margin-right: 5px;padding-bottom: 5px"><ui:insert name="content"></ui:insert></div>-->
+
+        <!-- Footer -->
+        <div id="footer">
+            <div class="container">
+                <div class="row">
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="12u">
+
+                        <section class="contact">
+                            <header>
+                                <h3>Για Υποστήριξη</h3>
+                            </header>
+                            <p>Επικοινωνήστε μαζί μας</p>
+                            <ul class="icons">
+                                <!--<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>-->
+                                <!--<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>-->
+                                <!--<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>-->
+                                <!--<li><a href="#" class="icon fa-pinterest"><span class="label">Pinterest</span></a></li>-->
+                                <!--<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>-->
+                                <li><a href="http://www.army.gr/default.php?pname=kepyes_contact"><span class="label">ΚΕΠΥΕΣ </span></a></li>
+                            </ul>
+                        </section>
+                        <!-- Copyright -->
+                        <div class="copyright">
+                            <ul class="menu">
+                                <li> Spiroskleft Copyright © 2017 for ΚΕΠΥΕΣ</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <h:outputScript src="/resources/assets/js/jquery.min.js"></h:outputScript>
+    <h:outputScript src="/resources/assets/js/jquery.dropotron.min.js"></h:outputScript>
+    <h:outputScript src="/resources/assets/js/jquery.scrolly.min.js"></h:outputScript>
+    <h:outputScript src="/resources/assets/js/jquery.onvisible.min.js"></h:outputScript>
+    <h:outputScript src="/resources/assets/js/skel.min.js"></h:outputScript>
+    <h:outputScript src="/resources/assets/js/util.js"></h:outputScript>
+    <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+    <h:outputScript src="/resources/assets/js/main.js"></h:outputScript>
+
+</h:body>
+</html>

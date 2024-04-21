@@ -1,0 +1,161 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a4j="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">TEST+</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define><!--  #{request.contextPath}/  -->
+    <!-- <ui:define name="topMenu"><ui:include src="/menus/topMenu.xhtml"></ui:include></ui:define> -->
+    <ui:define name="content">
+        <h:form id="form">
+            <div class="p-grid crud-demo">
+                <div class="p-col-12">
+                    <div class="card">
+                        <p:growl id="messages" showDetail="true"/>
+
+                        <p:toolbar styleClass="p-mb-4">
+                            <p:toolbarGroup>
+                                <p:commandButton value="New" icon="pi pi-plus" actionListener="#{rolesBean.openNew}"
+                                                 update="insertForm" oncomplete="PF('addDlg').show()"
+                                                 styleClass="ui-button-success" style="margin-right: .5rem"/>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <p:dataTable id="dt-products"
+                                     widgetVar="dtRoles"
+                                     var="record"
+                                     value="#{rolesBean.rolesList}"
+                                     reflow="true"
+                                     rowIndexVar="it"
+                                     rowKey="#{record.id}" paginator="true" rows="10" rowSelectMode="add"
+                                     paginatorPosition="bottom">
+
+                            <f:facet name="header">
+                                <div class="products-table-header">
+                                    <span style="font-weight: bold">Roles</span>
+
+                                    <span class="filter-container ui-input-icon-left"
+                                          style="position: absolute;right: 40px;">
+                                        <i class="pi pi-search" style="margin-left: 25px"></i>
+                                        <p:inputText id="globalFilter" onkeyup="PF('dtRoles').filter()"
+                                                     style="margin-left: 20px"
+                                                     placeholder="Search"/>
+                                    </span>
+                                </div>
+                            </f:facet>
+
+                            <p:column headerText="No" style="width: 60px!important;">
+                                <h:outputText value="#{it+1}"/>
+                            </p:column>
+
+                            <p:column headerText="Role"
+                                      sortBy="#{record.roleDesc}"
+                                      filterBy="#{record.roleDesc}">
+                                <h:outputText value="#{record.roleDesc}"/>
+                            </p:column>
+
+                            <p:column exportable="false" headerText="Actions" style="width: 80px; text-align: center">
+                                <p:commandButton icon="pi pi-pencil"
+                                                 update="updateForm"
+                                                 oncomplete="PF('updateDlg').show()"
+                                                 styleClass="edit-button rounded-button ui-button-success"
+                                                 process="@this"
+                                                 action="#{rolesBean.copyObject}">
+                                    <f:setPropertyActionListener value="#{record}"
+                                                                 target="#{rolesBean.role}"/>
+                                </p:commandButton>
+                                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" style="margin-left: 10px"
+                                                 process="@this" oncomplete="PF('deleteProductDialog').show()">
+                                    <f:setPropertyActionListener value="#{record}"
+                                                                 target="#{rolesBean.role}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+
+
+                        <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
+                                         message="Delete the role?" header="Confirm" severity="warn">
+                            <p:commandButton value="Yes" icon="pi pi-check"
+                                             actionListener="#{rolesBean.delete}" process="@this"
+                                             oncomplete="PF('deleteProductDialog').hide()"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-button-secondary"
+                                             icon="pi pi-times" onclick="PF('deleteProductDialog').hide()"/>
+                        </p:confirmDialog>
+
+                        <p:confirmDialog global="true" showEffect="fade" width="300">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes"
+                                             icon="pi pi-check"/>
+                            <p:commandButton value="No" type="button"
+                                             styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times"/>
+                        </p:confirmDialog>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+
+        <p:dialog header="Insert New Role" width="500px"
+                  showEffect="fade" modal="true" widgetVar="addDlg"
+                  responsive="true">
+            <h:form id="insertForm">
+                <p:outputPanel class="ui-fluid">
+                    <div class="p-field">
+                        <p:outputLabel required="true" value="Role Description" class="required"/><br/>
+                        <p:inputText id="name" value="#{rolesBean.role.roleDesc}" style="margin-top: 10px"
+                                     requiredMessage="Role must not be empty" required="true"
+                        />
+                    </div>
+                </p:outputPanel>
+
+                <p:outputPanel style="margin-top: 10px">
+                <p:commandButton value="Insert"
+                                 icon="pi pi-check"
+                                 action="#{rolesBean.insert()}"
+                                 oncomplete="if (args &amp;&amp; !args.validationFailed) PF('addDlg').hide();"
+                                 update="form"/>
+                </p:outputPanel>
+
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Update Role" showEffect="fade" modal="true" widgetVar="updateDlg" width="500px"
+                  responsive="true">
+            <h:form id="updateForm">
+                <p:outputPanel class="ui-fluid">
+                    <p:outputPanel rendered="#{not empty rolesBean.role}">
+                        <div class="p-field">
+                            <p:outputLabel required="true" value="Role Description" class="required"/><br/>
+                            <p:inputText value="#{rolesBean.role.roleDesc}"
+                                         required="true"/>
+                        </div>
+                    </p:outputPanel>
+                </p:outputPanel>
+
+                <p:outputPanel style="margin-top: 10px">
+                    <p:commandButton value="Save" icon="pi pi-check" action="#{rolesBean.update}"
+                                     update=":form"
+                                     oncomplete="PF('updateDlg').hide()"/>
+
+                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('updateDlg').hide()"
+                                     style="margin-left: 10px"
+                                     class="ui-button-secondary"/>
+                </p:outputPanel>
+
+            </h:form>
+        </p:dialog>
+
+
+    </ui:define>
+
+
+    <!--Είναι για το security για να βλέπουμε αν έχει πρόσβαση στην σελίδα ή όχι-->
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginBean.redirect('roles')}"/>
+    </f:metadata>
+
+</ui:composition>

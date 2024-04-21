@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+
+    <cc:interface>
+        <cc:attribute name="eventTime"/>
+        <cc:attribute name="eventOwner"/>
+        <cc:attribute name="text"/>
+        <cc:attribute name="color"/>
+        <cc:attribute name="imagePath"/>
+        <cc:attribute name="imageLibrary"/>
+        <cc:attribute name="fontawesome"/>
+        <cc:attribute name="station"/>
+        <cc:attribute name="mission"/>
+    </cc:interface>
+
+    <cc:implementation>
+
+        <div class="ui-g-3">
+            <span class="event-time">#{cc.attrs.eventTime}</span>
+            <i class="fa #{cc.attrs.fontawesome}" style="color:#{cc.attrs.color}"></i>
+        </div>
+
+        <div class="ui-g-9">
+            <span class="event-owner" style="color:#{cc.attrs.color}">#{cc.attrs.eventOwner}</span>
+            <span class="event-text">#{cc.attrs.text} (#{cc.attrs.station})<br/>(#{cc.attrs.mission})</span>
+            <div class="event-content">
+                <p:graphicImage name="#{cc.attrs.imagePath}" style="width: 60px"
+                                library="#{cc.attrs.imageLibrary}"/>
+            </div>
+        </div>
+
+    </cc:implementation>
+
+</h:body>
+</html>

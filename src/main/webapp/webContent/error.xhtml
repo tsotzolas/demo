@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a4j="http://primefaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">TEST+</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define><!--  #{request.contextPath}/  -->
+  <!-- <ui:define name="topMenu"><ui:include src="/menus/topMenu.xhtml"></ui:include></ui:define> -->
+    <ui:define name="content">
+
+        <p:panel header="Error">
+
+            <h:form id="form">
+
+                <p:commandButton value="Error 1"
+                                 type="button"
+                                 ajax="true"
+                                 actionListener="#{ErrorBean.error1()}">
+                    <p:ajax  listener="#{ErrorBean.error1()}"/>
+                </p:commandButton>
+
+                <p:commandButton value="Error 2"
+                                 type="button"
+                                 ajax="true"
+                                 actionListener="#{ErrorBean.error2()}">
+                    <p:ajax  listener="#{ErrorBean.error2()}"/>
+                </p:commandButton>
+
+
+                <p:commandButton value="Error 3"
+                                 type="button"
+                                 ajax="true"
+                                 actionListener="#{ErrorBean.error3()}">
+                    <p:ajax  listener="#{ErrorBean.error3()}"/>
+                </p:commandButton>
+
+
+                <p:commandButton value="Error 4"
+                                 type="button"
+                                 ajax="true"
+                                 actionListener="#{ErrorBean.error4()}">
+                    <p:ajax  listener="#{ErrorBean.error4()}"/>
+                </p:commandButton>
+
+            </h:form>
+        </p:panel>
+
+
+    </ui:define>
+
+
+    <!--Είναι για το security για να βλέπουμε αν έχει πρόσβαση στην σελίδα ή όχι-->
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{LoginBean.redirect('error')}"/>
+    </f:metadata>
+
+</ui:composition>

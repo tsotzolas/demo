@@ -1,0 +1,7 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/*
+*.iml
+.idea/
+#src/test/java/
+target/
+pearl.log

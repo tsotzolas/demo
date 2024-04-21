@@ -1,0 +1,411 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+
+    <script type="text/javascript">
+        var imax = 400;
+
+        function bindiframe() {
+
+            $('.ql-editor').on('keyup', function (e) {
+                ilength = $('.ql-editor').text().length;
+                $('#messageForm\\:accordion\\:txt').html('Remain characters:' + (imax - ilength));
+                if ((imax - ilength) &lt; 0) {
+                    // PF('growlWV').renderMessage({"summary":"Message Warning",
+                    //     "detail":"Too many characters on message",
+                    //     "severity":"warn"});
+                    // $('#messageForm\\:accordion\\:sendButton').attr("disabled","true");
+                    rctrue();
+
+                    // https://stackoverflow.com/questions/28164476/enable-disable-button-through-java-script-in-jsf?rq=1
+                } else {
+                    rcfalse();
+                }
+            });
+        }
+
+        // messageForm:accordion:rongnk
+    </script>
+
+<!--    <p:remoteCommand name="rcfalse" update="messageForm:accordion:sendbutton"-->
+<!--                     actionListener="#{messagesBean.disableButton(false)}"/>-->
+<!--    <p:remoteCommand name="rctrue" update="messageForm:accordion:sendbutton"-->
+<!--                     actionListener="#{messagesBean.disableButton(true)}"/>-->
+
+    <div class="clearfix">
+        <p:growl widgetVar="growlWV"/>
+        <!--        <p:outputPanel deferred="true" deferredMode="visible">-->
+        <p:sidebar id="sidebar2" widgetVar="sidebar2" position="right" baseZIndex="-100"
+                   style="width: 400px">
+            <p:scrollPanel mode="native" style="height:100%;">
+
+                <p:accordionPanel id="accordion" multiple="true" widgetVar="accordion" style="text-align: left"
+                                  onTabShow="bindiframe()">
+<!--                    <p:tab title="New Message" id="newMessage">-->
+
+<!--                        <div class="ui-g">-->
+<!--                            <div class="ui-g-12">-->
+<!--                                <div class="ui-g-12">-->
+<!--                                    <span style="float: left">Send to:</span>-->
+<!--                                </div>-->
+<!--                                <div class="ui-g-12">-->
+<!--                                    <p:tabView dynamic="true" cache="true" id="sendTo" style=";width: 100%">-->
+<!--                                        <p:tab title="Users" id="singleUser">-->
+<!--                                            <p:selectCheckboxMenu id="multiple"-->
+<!--                                                                  value="#{messagesBean.selectedUsersList}"-->
+<!--                                                                  label="Users" multiple="true"-->
+<!--                                                                  filter="false"-->
+<!--                                                                  style="width: 100%;"-->
+<!--                                                                  converter="userConverter"-->
+<!--                                                                  onchange="bindiframe()"-->
+<!--                                                                  panelStyle="width:250px">-->
+<!--                                                <f:selectItems value="#{messagesBean.usersList}"-->
+<!--                                                               var="user"-->
+
+<!--                                                               itemValue="#{user}"-->
+<!--                                                               itemLabel="#{user.idperson.personLname} #{user.idperson.personFname}"/>-->
+<!--                                                <p:ajax event="change" listener="#{messagesBean.clear}"-->
+<!--                                                        update="groups"/>-->
+<!--                                            </p:selectCheckboxMenu>-->
+<!--                                        </p:tab>-->
+
+<!--                                        <p:tab title="Groups" id="multiUser">-->
+<!--                                            <p:selectCheckboxMenu id="groups"-->
+<!--                                                                  value="#{messagesBean.selectedGroupUserList}"-->
+<!--                                                                  label="Groups" multiple="true"-->
+<!--                                                                  filter="false"-->
+<!--                                                                  style="width: 100%;"-->
+<!--                                                                  converter="groupConverter"-->
+<!--                                                                  panelStyle="width:250px">-->
+<!--                                                <f:selectItems value="#{messagesBean.groupsList}"-->
+<!--                                                               var="group"-->
+<!--                                                               itemValue="#{group}"-->
+<!--                                                               itemLabel="#{group.groupName}"/>-->
+<!--                                                <p:ajax event="change"-->
+
+<!--                                                        listener="#{messagesBean.showUsersFromSelectedGroup}"-->
+<!--                                                        update="multiple chips"/>-->
+<!--                                            </p:selectCheckboxMenu>-->
+<!--                                            <h:panelGrid columns="1" id="chips">-->
+<!--                                                <p:outputLabel value="Selected Users in groups"-->
+<!--                                                               style="font-weight: bold"-->
+<!--                                                               rendered="#{messagesBean.selectedGroupUsers ne ''}"/>-->
+<!--                                                <p:outputLabel style="width: 50%"-->
+<!--                                                               value="#{messagesBean.selectedGroupUsers}"/>-->
+<!--                                            </h:panelGrid>-->
+<!--                                        </p:tab>-->
+<!--                                    </p:tabView>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <div class="ui-g-12">-->
+<!--                                <span style="float: left">Message: (up to 400 characters)</span>-->
+<!--                                <br/>-->
+<!--                                <p:textEditor id="messagetxt"-->
+<!--                                              value="#{messagesBean.newmessageText}"-->
+<!--                                              height="200" style="margin-bottom:10px"-->
+<!--                                              placeholder="Enter your content"-->
+<!--                                              onchange="bindiframe()"-->
+<!--                                >-->
+<!--                                    <f:facet name="toolbar">-->
+<!--                                            <span class="ql-formats">-->
+<!--                                                <button class="ql-bold"/>-->
+<!--                                                <button class="ql-italic"/>-->
+<!--                                                <button class="ql-underline"/>-->
+<!--                                                <button class="ql-strike"/>-->
+<!--                                            </span>-->
+<!--                                        <span class="ql-formats">-->
+<!--                                                <select class="ql-color"/>-->
+<!--                                                <select class="ql-background"/>-->
+<!--                                            </span>-->
+<!--                                        <span class="ql-formats">-->
+<!--                                                <button class="ql-clean"/>-->
+<!--                                            </span>-->
+<!--                                    </f:facet>-->
+<!--                                </p:textEditor>-->
+<!--                                <h:outputText id="txt"/>-->
+<!--                                &lt;!&ndash;<p:inputTextarea id="messagetxt" rows="6"-->
+<!--                                                 counter="display"-->
+<!--                                                 maxlength="200"-->
+<!--                                                 counterTemplate="{0} characters remaining."-->
+<!--                                                 value="#{messagesBean.newmessageText}"-->
+<!--                                                 style="width:97%"/>&ndash;&gt;-->
+<!--                                <br/>-->
+<!--                                <h:outputText id="display"/>-->
+<!--                            </div>-->
+
+<!--                            <div class="ui-g-12">-->
+<!--                                <p:commandButton-->
+<!--                                        id="sendbutton"-->
+<!--                                        actionListener="#{messagesBean.sendNewMessage(messagesBean.selectedUsersList,messagesBean.selectedGroupUserList,messagesBean.newmessageText)}"-->
+<!--                                        action="#{messagesBean.clear}"-->
+<!--                                        disabled="#{messagesBean.disableSendButton}"-->
+<!--                                        update="sendTo messageForm:accordion:messagetxt @([id$=messagesDataTable])"-->
+<!--                                        ajax="true"-->
+<!--                                        icon="fa fa-send"-->
+<!--                                        oncomplete="if (args &amp;&amp; !args.validationFailed) {PF('accordion').select(1);PF('accordion').unselect(0);PF('sidebar2').show()}"-->
+<!--                                        value="Send Message">-->
+<!--                                    <p:resetInput target="messagetxt"/>-->
+<!--                                </p:commandButton>-->
+<!--                            </div>-->
+
+<!--                        </div>-->
+
+<!--                    </p:tab>-->
+
+
+<!--                    <p:tab title="Messages" id="messages">-->
+<!--                        <p:outputPanel >-->
+<!--                            <p:dataTable id="pinedmessagesDataTable"-->
+<!--                                         widgetVar="pinedmessagesDataTable"-->
+<!--                                         value="#{messagesBean.pinmessagesList}"-->
+<!--                                         var="recordPin"-->
+<!--                                         selection="#{messagesBean.message}"-->
+<!--                                         styleClass="rf-dt stable"-->
+<!--                                         editable="true">-->
+
+<!--                                <p:column headerText="Pined Messages">-->
+<!--                                    <div class="ui-g">-->
+<!--                                        <div class="ui-g-2">-->
+<!--                                            <h:graphicImage-->
+<!--                                                    value="data:image/jpg;base64,#{loginBean.avatarGender(messagesBean.userFromUserId(recordPin.iduserFrom.iduser))}"-->
+<!--                                                    styleClass="rcorners"-->
+<!--                                                    width="45"/>-->
+<!--                                        </div>-->
+<!--                                        <div class="ui-g-10 ">-->
+<!--                                            <h:outputText value="#{recordPin.messageDate}"-->
+<!--                                                          style="font-size: small; color: #0056b3">-->
+<!--                                                <f:convertDateTime-->
+<!--                                                        pattern="dd MMM yyyy HH:mm"></f:convertDateTime>-->
+<!--                                            </h:outputText>-->
+<!--                                            <span style="margin-left: 2px;">-->
+<!--                                                    <h:outputText-->
+<!--                                                            value="#{messagesBean.userFromUserId(recordPin.iduserFrom.iduser).idperson.personLname} #{messagesBean.userFromUserId(recordPin.iduserFrom.iduser).idperson.personFname.charAt(0)}"-->
+<!--                                                            style="font-size: x-small; color: red">-->
+
+<!--                                                    </h:outputText>-->
+<!--                                                    </span>-->
+
+<!--                                            <span style="float: right">-->
+<!--                                                  <p:commandLink id="unpinMessage"-->
+<!--                                                                 ajax="true"-->
+<!--                                                                 title="Unpin Message"-->
+<!--                                                                 process="@this">-->
+<!--                                                <p:ajax listener="#{messagesBean.unpinMessage(recordPin)}"-->
+<!--                                                        event="click"-->
+<!--                                                        process="@this"-->
+<!--                                                        update="@([id$=pinedmessagesDataTable]) @([id$=readedmessagesDataTable]) messageForm:accordion:messagetxt"/>-->
+<!--                                                      <h:graphicImage value="/resources/icons/delete.png"/>-->
+<!--                                                  </p:commandLink>-->
+<!--                                                 <br/>-->
+<!--                                    <p:commandLink title="Show message" id="mes11"-->
+<!--                                                   oncomplete="PF('messageDialog').show();"-->
+<!--                                                   update="messageForm:messageDialog">-->
+<!--                                        <f:setPropertyActionListener value="#{recordPin}"-->
+<!--                                                                     target="#{messagesBean.message}"/>-->
+<!--                                        <h:outputText class="ui-icon ui-icon-search"/>-->
+<!--                                    </p:commandLink>-->
+<!--                                            </span>-->
+<!--                                            <br/>-->
+<!--                                            <div style="max-height: 50px;">-->
+<!--                                                <h:outputText value="#{recordPin.message}" escape="false"-->
+<!--                                                              style="font-size: small;"/>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </p:column>-->
+<!--                            </p:dataTable>-->
+<!--                        </p:outputPanel>-->
+<!--                        <br/>-->
+
+<!--                        <p:dataTable id="messagesDataTable"-->
+<!--                                     widgetVar="messagesDataTable"-->
+<!--                                     value="#{messagesBean.messagesList}"-->
+<!--                                     var="record"-->
+<!--                                     selection="#{messagesBean.message}"-->
+<!--                                     styleClass="rf-dt stable"-->
+<!--                                     editable="true" emptyMessage="No new messages">-->
+
+<!--                            <p:column headerText="New Messages" style="text-align: left;max-height: 80px">-->
+
+
+
+<!--                                <div class="ui-g-2">-->
+<!--                                    <h:graphicImage value="data:image/jpg;base64,#{loginBean.avatarGender(messagesBean.userFromUserId(record.iduserFrom.iduser))}"-->
+<!--                                            styleClass="rcorners"-->
+<!--                                            width="45"/>-->
+<!--                                </div>-->
+<!--                                <div class="ui-g-10">-->
+
+<!--                                    <h:outputText value="#{record.messageDate}"-->
+<!--                                                  style="font-size: small; color: #0056b3">-->
+<!--                                        <f:convertDateTime-->
+<!--                                                pattern="dd MMM yyyy HH:mm"></f:convertDateTime>-->
+<!--                                    </h:outputText>-->
+
+<!--                                    <span style="margin-left: 2px;">-->
+<!--                                                    <h:outputText-->
+<!--                                                            value="#{messagesBean.userFromUserId(record.iduserFrom.iduser).idperson.personLname} #{messagesBean.userFromUserId(record.iduserFrom.iduser).idperson.personFname.charAt(0)}"-->
+<!--                                                            style="font-size: x-small; color: red">-->
+
+<!--                                                    </h:outputText>-->
+<!--                                    </span>-->
+
+<!--                                    <span style="float: right">-->
+<!--                                             <p:commandLink id="pinMessage"-->
+<!--                                                            ajax="true"-->
+<!--                                                            title="Pin Message"-->
+<!--                                                            oncomplete="PF('accordion').select(1);PF('accordion').unselect(0);PF('sidebar2').show()"-->
+<!--                                                            process="@this">-->
+<!--                                                <p:ajax listener="#{messagesBean.pinMessage(record)}" event="click"-->
+<!--                                                        process="@this"-->
+<!--                                                        update="@([id$=pinedmessagesDataTable]) @([id$=readedmessagesDataTable]) messagesDataTable messageForm:accordion:messagetxt"/>-->
+<!--                                                <h:graphicImage value="/resources/icons/push-pin-red.png"/>-->
+<!--                                             </p:commandLink>-->
+
+<!--                                        <br/>-->
+<!--                                    <p:commandLink title="Show message" id="mes"-->
+<!--                                                   oncomplete="PF('messageDialog').show();"-->
+<!--                                                   update="messageForm:messageDialog">-->
+<!--                                        <f:setPropertyActionListener value="#{record}"-->
+<!--                                                                     target="#{messagesBean.message}"/>-->
+<!--                                        <h:outputText class="ui-icon ui-icon-search"/>-->
+<!--                                    </p:commandLink>-->
+<!--                                    </span>-->
+
+
+<!--                                    <br/>-->
+<!--                                    <p:commandLink id="readMessage"-->
+<!--                                                   title="Read Message"-->
+<!--                                                   ajax="true"-->
+<!--                                                   oncomplete="PF('accordion').select(1);PF('accordion').unselect(0);PF('sidebar2').show()"-->
+<!--                                                   process="@this"-->
+
+<!--                                                   style="font-size: small;"-->
+<!--                                    >-->
+<!--                                        <div style="max-height: 50px;">-->
+<!--                                            <h:outputText value="#{record.message}" escape="false"-->
+<!--                                                          style="display:block;max-height:50px"/>-->
+<!--                                        </div>-->
+
+<!--                                        <p:ajax listener="#{messagesBean.readMessage(record)}"-->
+<!--                                                event="click"-->
+<!--                                                process="@this"-->
+<!--                                                update=" @([id$=readedmessagesDataTable]) messagesDataTable messageForm:accordion:messagetxt"/>-->
+<!--                                    </p:commandLink>-->
+<!--                                </div>-->
+<!--                            </p:column>-->
+<!--                        </p:dataTable>-->
+
+
+<!--                        <br/>-->
+<!--                        <p:dataTable id="readedmessagesDataTable"-->
+<!--                                     widgetVar="readedmessagesDataTable"-->
+<!--                                     value="#{messagesBean.readedmessagesList}"-->
+<!--                                     var="record"-->
+<!--                        >-->
+
+<!--                            <p:column headerText="Readed Messages (Last 2 days)" style="text-align: left;">-->
+<!--                                <div class="ui-g">-->
+<!--                                    <div class="ui-g-2">-->
+<!--                                        <h:graphicImage-->
+<!--                                                value="data:image/jpg;base64,#{loginBean.avatarGender(messagesBean.userFromUserId(record.iduserFrom.iduser))}"-->
+<!--                                                styleClass="rcorners"-->
+
+<!--                                                width="45"/>-->
+<!--                                    </div>-->
+<!--                                    <div class="ui-g-10 ">-->
+<!--                                        <h:outputText value="#{record.messageDate}"-->
+<!--                                                      style="font-size: small; color: #b4b4b4">-->
+<!--                                            <f:convertDateTime-->
+<!--                                                    pattern="dd MMM yyyy HH:mm">-->
+<!--                                            </f:convertDateTime>-->
+<!--                                        </h:outputText>-->
+
+<!--                                        <span style="margin-left: 2px;">-->
+<!--                                                    <h:outputText-->
+<!--                                                            value="#{messagesBean.userFromUserId(record.iduserFrom.iduser).idperson.personLname} #{messagesBean.userFromUserId(record.iduserFrom.iduser).idperson.personFname.charAt(0)}"-->
+<!--                                                            style="font-size: x-small; color: #ef8376">-->
+
+<!--                                                    </h:outputText>-->
+
+<!--                                        </span>-->
+<!--                                        <span style="float: right">-->
+
+<!--                                    <p:commandLink title="Show message" id="mes1"-->
+<!--                                                   oncomplete="PF('messageDialog').show();"-->
+<!--                                                   update="messageForm:messageDialog">-->
+<!--                                        <f:setPropertyActionListener value="#{record}"-->
+<!--                                                                     target="#{messagesBean.message}"/>-->
+<!--                                        <h:outputText class="ui-icon ui-icon-search"/>-->
+<!--                                    </p:commandLink>-->
+<!--                                    </span>-->
+
+<!--                                        <br/>-->
+<!--                                        <div style="max-height: 50px;">-->
+<!--                                            <h:outputText value="#{record.message}"-->
+<!--                                                          style="font-size: small; color: #b4b4b4" escape="false">-->
+<!--                                            </h:outputText>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </p:column>-->
+
+<!--                        </p:dataTable>-->
+<!--                    </p:tab>-->
+
+                </p:accordionPanel>
+            </p:scrollPanel>
+        </p:sidebar>
+        <!--        </p:outputPanel>-->
+
+        <!--                <p:poll interval="5" listener="#{messagesBean.readedMessages()}"-->
+        <!--                       />-->
+        <!--        @([id$=messagesDataTable]) @([id$=readedmessagesDataTable])-->
+
+    </div>
+
+
+<!--    <p:dialog id="messageDialog" widgetVar="messageDialog" modal="false" resizable="true" closeOnEscape="true"-->
+<!--              dynamic="true"-->
+<!--              header="Message" style="min-width: 500px">-->
+
+<!--        <div class="ui-g">-->
+<!--            <div class="ui-g-2">-->
+<!--                <h:graphicImage-->
+<!--                        value="data:image/jpg;base64,#{loginBean.avatarGender(messagesBean.userFromUserId(messagesBean.message.iduserFrom))}"-->
+<!--                        styleClass="rcorners"-->
+<!--                        width="45"/>-->
+<!--            </div>-->
+<!--            <div class="ui-g-10">-->
+
+<!--                <h:outputText value="#{messagesBean.message.messageDate}"-->
+<!--                              style="font-size: small; color: #0056b3">-->
+<!--                    <f:convertDateTime-->
+<!--                            pattern="dd MMM yyyy HH:mm"></f:convertDateTime>-->
+<!--                </h:outputText>-->
+
+<!--                <span style="margin-left: 2px;">-->
+<!--                  <h:outputText-->
+<!--                          value="#{messagesBean.userFromUserId(messagesBean.message.iduserFrom).idperson.personLname} #{messagesBean.userFromUserId(messagesBean.message.iduserFrom).idperson.personFname.charAt(0)}"-->
+<!--                          style="font-size: x-small; color: red">-->
+<!--                  </h:outputText>-->
+<!--                </span>-->
+
+
+<!--                <br/>-->
+
+<!--                <h:outputText value="#{messagesBean.message.message}" escape="false"-->
+<!--                              style="display:block;"/>-->
+
+
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </p:dialog>-->
+
+
+</ui:composition>

@@ -1,0 +1,298 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a4j="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:o="http://omnifaces.org/ui"
+                template="../WEB-INF/template.xhtml">
+
+    <ui:define name="title">PEARL SA</ui:define>
+    <ui:define name="header">
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=login.xhtml"/>
+    </ui:define><!--  #{request.contextPath}/  -->
+    <!-- <ui:define name="topMenu"><ui:include src="/menus/topMenu.xhtml"></ui:include></ui:define> -->
+    <ui:define name="content">
+
+        <style type="text/css">
+            .ui-toggleswitch {
+                vertical-align: bottom;
+            }
+        </style>
+
+        <p:panel header="User Preferences">
+            <p></p>
+            <h:form id="form">
+                <p:growl id="messages" showDetail="true" life="5000"/>
+                <p:outputPanel id="userData">
+                    <div class="ui-g">
+                        <div class="ui-g-4" style="text-align: center">
+                            <h3>User's Data</h3>
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <p>
+                                        <p:outputLabel value="First Name" styleClass="required"/><br/>
+                                        <p:inputText value="#{userpreferencesBean.employee.employeeFname}"/>
+                                    </p>
+
+                                    <p>
+                                        <p:outputLabel value="Last Name" styleClass="required"/><br/>
+                                        <p:inputText value="#{userpreferencesBean.employee.employeeLname}"/>
+                                    </p>
+                                </div>
+
+                                <div class="ui-g-6">
+                                    <p>
+                                        <p:outputLabel value="Email" styleClass="required"/><br/>
+                                        <p:inputText value="#{userpreferencesBean.employee.employeeEmail}"/>
+                                    </p>
+
+                                    <p>
+                                        <p:outputLabel value="Gender" styleClass="required"/><br/>
+                                        <p:selectOneButton value="#{userpreferencesBean.employee.genderMale}">
+                                            <f:selectItem itemLabel="Male" itemValue="1"/>
+                                            <f:selectItem itemLabel="Female" itemValue="0"/>
+                                        </p:selectOneButton>
+                                    </p>
+                                </div>
+                            </div>
+                            <p:commandButton value="Save" ajax="true"
+                                             actionListener="#{userpreferencesBean.saveEmployee}"
+                                             update=" form:messages form:userData"
+                            />
+                        </div>
+
+                        <div class="ui-g-8">
+                            <div class="ui-g-4" style="text-align: center">
+                                <h3>Avatar</h3>
+                                <p>
+                                    <h:graphicImage id="avatar"
+                                                    value="data:image/jpg;base64,#{loginBean.avatarGender(userpreferencesBean.user)}"
+                                                    style="width: 20%;border-radius: 250px;"/>
+
+                                </p>
+
+                                <p:commandButton value=" Change Avatar" ajax="true"
+                                                 actionListener="#{userpreferencesBean.clear}"
+                                                 update="dlg"
+                                                 oncomplete="PF('dlg').show()"/>
+
+                            </div>
+<!--                            <div class="ui-g-8">-->
+<!--                                <div class="ui-g-4">-->
+
+<!--                                    <h3>Menu Color</h3>-->
+
+<!--                                    <p:menu>-->
+<!--                                        <p:submenu id="pm_menu_colors" label="Menu Colors" icon="fa fa-paint-brush">-->
+<!--                                            <p:menuitem id="pm_menu_dark" value="Dark Menu" icon="fa fa-square"-->
+<!--                                                        actionListener="#{guestPreferences.saveLightMenu(false)}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_menu_light" value="Light Menu" icon="fa fa-square-o"-->
+<!--                                                        actionListener="#{guestPreferences.saveLightMenu(true)}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                        </p:submenu>-->
+<!--                                    </p:menu>-->
+<!--                                    <br/>-->
+<!--                                    <h3>Special Effects</h3>-->
+<!--                                    <p:selectBooleanButton id="value2" value="#{userpreferencesBean.user.specialEffect}" onLabel="Yes" offLabel="No" onIcon="fa fa-check" offIcon="fa fa-times" style="width:60px">-->
+<!--                                        <p:ajax listener="#{userpreferencesBean.saveUser}" />-->
+<!--                                    </p:selectBooleanButton>-->
+<!--                                </div>-->
+
+<!--                                <div class="ui-g-4">-->
+<!--                                    <h3>Layout Modes</h3>-->
+<!--                                    <p:menu>-->
+<!--                                        <p:submenu id="pm_layout_modes" label="Layout Modes" icon="fa fa-gear">-->
+<!--                                            <f:attribute name="badge" value="5"/>-->
+<!--                                            <p:menuitem id="pm_layout_slim" value="Slim" icon="fa fa-window-restore"-->
+<!--                                                        actionListener="#{guestPreferences.saveLayoutMode('slim')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_static" value="Static" icon="fa fa-bars"-->
+<!--                                                        actionListener="#{guestPreferences.saveLayoutMode('static')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_overlay" value="Overlay" icon="fa fa-arrows-h"-->
+<!--                                                        actionListener="#{guestPreferences.saveLayoutMode('overlay')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_horizontal" value="Horizontal"-->
+<!--                                                        icon="fa fa-arrows-v"-->
+<!--                                                        actionListener="#{guestPreferences.saveLayoutMode('horizontal')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_toggle" value="Toggle" icon="fa fa-chevron-left"-->
+<!--                                                        actionListener="#{guestPreferences.saveLayoutMode('toggle')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                        </p:submenu>-->
+<!--                                    </p:menu>-->
+<!--                                </div>-->
+<!--                                <div class="ui-g-4">-->
+<!--                                    <h3>Themes</h3>-->
+<!--                                    <p:menu>-->
+<!--                                        <p:submenu id="pm_themes_colors" label="Themes" icon="fa fa-paint-brush">-->
+<!--                                            <f:attribute name="badge" value="16"/>-->
+<!--                                            <p:menuitem id="pm_layout_teal_yellow" value="Teal - Yellow"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('teal-yellow')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_blue_orange" value="Blue - Orange"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('blue-orange')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_pink_teal" value="Pink - Teal"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('pink-teal')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_indigo_purple" value="Indigo - Purple"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('indigo-purple')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_green_pink" value="Green - Pink"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('green-pink')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_indigo_yellow" value="Indigo - Yellow"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('indigo-yellow')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_cyan_deeporange" value="Cyan - Deep Orange"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('cyan-deeporange')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_green_orange" value="Green - Orange"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('green-orange')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_orange_cyan" value="Orange - Cyan"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('orange-cyan')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_blue_grey" value="Blue - Grey"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('blue-grey')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_deeppurple_teal" value="Deep Purple - Teal"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('deeppurple-teal')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_pink_cyan" value="Pink - Cyan"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('pink-cyan')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_orange_indigo" value="Orange - Indigo"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('orange-indigo')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_darkpink_cyan" value="Dark Pink - Cyan"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('darkpink-cyan')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                            <p:menuitem id="pm_layout_green_purple" value="Green - Purple"-->
+<!--                                                        icon="fa fa-diamond"-->
+<!--                                                        actionListener="#{guestPreferences.saveTheme('green-purple')}"-->
+<!--                                                        ajax="false"/>-->
+<!--                                        </p:submenu>-->
+<!--                                    </p:menu>-->
+<!--                                </div>-->
+
+
+<!--                            </div>-->
+                        </div>
+                    </div>
+                </p:outputPanel>
+            </h:form>
+        </p:panel>
+
+
+        <p:dialog id="dlg" widgetVar="dlg" modal="true" width="60%" closeOnEscape="true" position="center top"
+                  style="margin-top: 50px">
+            <h:form id="avatarForm">
+                <p:panel header="Change Avatar">
+                    <p:tabView dynamic="true" id="avatarTab">
+                        <!--<p:tab title="Take photo">-->
+                        <!--<h:panelGrid columns="3" cellpadding="5">-->
+                        <!--<p:photoCam widgetVar="pc" listener="#{userpreferencesBean.oncapture}" update="photo" />-->
+                        <!--<p:commandButton type="button" value="Capture" onclick="PF('pc').capture()"/>-->
+                        <!--<p:outputPanel id="photo">-->
+                        <!--<p:graphicImage name="demo/images/photocam/#{userpreferencesBean.filename}.jpeg" rendered="#{not empty photoCamView.filename}"/>-->
+                        <!--</p:outputPanel>-->
+                        <!--</h:panelGrid>-->
+
+                        <!--</p:tab>-->
+                        <p:tab title="Upload Photo">
+                            <!--<h:panelGrid columns="2" cellpadding="10">-->
+                            <div class="ui-g">
+                                <div class="ui-g-12">
+                                    <p:fileUpload listener="#{userpreferencesBean.handleFileUpload}"
+                                                  mode="advanced" dragDropSupport="true"
+                                                  update="form:messages  avatarForm avatarImageCroped"
+                                                  sizeLimit="5000000"
+                                                  process="@form"
+                                                  multiple="false"
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|GIF|JPE?G|PNG)$/"
+                                                  a:onchange="change()"
+                                    />
+                                    <p:remoteCommand name="change" actionListener="#{userpreferencesBean.clear}"/>
+                                </div>
+                                <!--<div class="ui-g-6">-->
+                                <p:outputPanel rendered="#{userpreferencesBean.imageFilePath ne null}"
+                                               id="avatarImage1">
+                                    <p:outputLabel value="Crop image:" style="font-weight: bolder"
+                                    />
+
+                                    <!--                                    image="http://localhost:8080/pearl/reports/#{userpreferencesBean.imageFilePath}"-->
+                                    <p:imageCropper
+                                            id="avatarImage"
+                                            image="https://#{request.serverName}:#{request.serverPort}#{request.contextPath}/reportsApi/#{userpreferencesBean.imageFilePath}"
+                                            value="#{userpreferencesBean.croppedImage}"
+                                            aspectRatio="1.0" initialCoords="225,75,300,125"
+                                            boxWidth="400"
+                                            boxHeight="400"
+                                            minSize="90,90"/>
+
+                                    <br/>
+                                    <p:commandButton id="cropButton"
+                                                     value="Crop"
+                                                     action="#{userpreferencesBean.crop()}"
+                                                     update="form:messages image avatarImage avatarForm"
+                                                     icon="ui-icon-scissors"/>
+
+                                </p:outputPanel>
+
+
+                                <div class="ui-g-2"></div>
+                                <div class="ui-g-4">
+                                    <p:outputPanel rendered="#{userpreferencesBean.imageFilePath ne null}"
+                                                   id="avatarImageCroped">
+                                        <p:outputLabel value="Cropped image:" style="font-weight: bolder"/>
+                                        <br/>
+
+                                        <p:graphicImage id="image" cache="false" style="max-height: 400px"
+                                                        value="#{userpreferencesBean.avatarImage}"/>
+                                        <br/>
+
+                                        <p:commandButton value="Save Avatar"
+                                                         actionListener="#{userpreferencesBean.saveAvatar}"
+                                                         oncomplete="PF('dlg').hide()"
+                                                         update="form:avatar messageForm:topAvatar messageForm:sidebar2 form:messages"
+                                        />
+                                    </p:outputPanel>
+
+                                </div>
+
+
+                            </div>
+
+                        </p:tab>
+
+                    </p:tabView>
+
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+
+    <!--Είναι για το security για να βλέπουμε αν έχει πρόσβαση στην σελίδα ή όχι-->
+    <!--    <f:metadata>-->
+    <!--        <f:event type="preRenderView" listener="#{loginBean.redirect('userpreferences')}"/>-->
+    <!--    </f:metadata>-->
+</ui:composition>

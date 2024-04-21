@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+
+    <composite:attribute name="minDateString"/>
+    <composite:attribute name="maxDateString"/>
+<!--    <composite:attribute name="id"/>-->
+    <composite:attribute name="sliderValue"/>
+<!--    <composite:attribute name="sliderName"/>-->
+    <composite:attribute name="id"/>
+    <!--    <composite:attribute name="registerButtonAction"-->
+    <!--                         method-signature="java.lang.String action()" />-->
+</composite:interface>
+
+<composite:implementation>
+
+<!--    <script type="text/javascript"-->
+<!--            src="#{request.contextPath}/resources/js/jqrangeslider/lib/jquery.mousewheel.min.js"></script>-->
+<!--    <script type="text/javascript"-->
+<!--            src="#{request.contextPath}/resources/js/jqrangeslider/jQAllRangeSliders-min.js"></script>-->
+<!--    <script type="text/javascript"-->
+<!--            src="#{request.contextPath}/resources/js/jqrangeslider/jqRangeSliderCode1.js"></script>-->
+<!--    <h:outputStylesheet name="css/jqrangeslider/iThing-min.css"/>-->
+
+
+    <composite:implementation>
+
+        <script type="text/javascript"
+                src="#{request.contextPath}/resources/js/jqrangeslider/lib/jquery.mousewheel.min.js"></script>
+        <script type="text/javascript"
+                src="#{request.contextPath}/resources/js/jqrangeslider/jQAllRangeSliders-min.js"></script>
+        <script type="text/javascript"
+                src="#{request.contextPath}/resources/js/jqrangeslider/jqRangeSliderCode1.js"></script>
+        <h:outputStylesheet name="css/jqrangeslider/iThing-min.css"/>
+
+
+
+
+
+        <h:form >
+
+            <script>
+                jQuery(document).ready(function() {
+                    console.log(#{SliderExampleBean.mindate});
+                    console.log(#{SliderExampleBean.maxdate});
+                    console.log(#{SliderExampleBean.slidername});
+                    console.log(#{SliderExampleBean.sliderValueId});
+                    rangeSlider(#{SliderExampleBean.mindate}:output,#{SliderExampleBean.maxdate}:output,#{SliderExampleBean.slidername}:output,#{SliderExampleBean.sliderValueId}:output);
+                });
+            </script>
+            <div style="margin-top: 120px">
+                <dl id="#{SliderBean.slidername}" class="iThing">
+                </dl>
+            </div>
+
+            <input type="hidden" id="#{SliderBean.mindate}" value="#{cc.attrs.minDateString}"/>
+            <input type="hidden" id="#{SliderBean.maxdate}" value="#{cc.attrs.maxDateString}"/>
+
+            <!--Hidden μεταβλητη για να εχουμε τα αποτελεσματα. -->
+<!--            <input type="hidden" id="#{cc.attrs.sliderValueId}"  name="#{cc.attrs.sliderValueId}" value="#{cc.attrs.sliderValue}" />-->
+<!--            <h:inputHidden id="#{cc.attrs.sliderValueId}"  value="#{cc.attrs.sliderValue}" />-->
+
+<!--            <input type="hidden" jsf:id="#{cc.attrs.sliderValueId}" jsf:value="#{cc.attrs.sliderValue}" class="#{cc.attrs.sliderValueId}"/>-->
+
+            <input type="hidden" id="#{SliderBean.sliderValueId}" jsf:value="#{cc.attrs.sliderValue}" name="#{cc.attrs.id}"/>
+
+<!--            <h:inputHidden id="#{cc.attrs.sliderValueId}"  value="#{cc.attrs.sliderValue}" jsfc="" />-->
+
+<!--            <h:inputText value="#{SliderExampleBean.sliderValue}"/>-->
+            <!--Hidden μεταβλητη για να εχουμε το id του slider -->
+            <input type="hidden" id="#{SliderBean.slidername}" value="#{SliderBean.slidername}"/>
+            <!--Hidden μεταβλητη για να εχουμε το id του πεδιου που βαζουμε τις τιμες -->
+<!--            <input type="hidden" id="sliderValueId" value="#{SliderExampleBean.jsonToDateConverter(cc.attrs.sliderValueId)}"/>-->
+<!--            <input type="hidden" id="#{SliderExampleBean.sliderValueId}" value="#{cc.attrs.sliderValueId}"/>-->
+
+        </h:form>
+    </composite:implementation>
+
+
+</composite:implementation>
+</html>

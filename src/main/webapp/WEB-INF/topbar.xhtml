@@ -1,0 +1,131 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:jsf="http://xmlns.jcp.org/jsf"
+        xmlns:pa="http://primefaces.org/manhattan">
+
+
+    <style type="text/css">
+        .ui-sticky {
+            top: 70px !important;
+        }
+        @media (max-width: 960px) {
+            .ui-sticky {
+                top: 110px !important;
+            }
+        }
+    </style>
+
+    <h:form id="messageForm">
+        <div class="layout-topbar " style="background-color:#{LoginBean.istestEnviroment ? '#cb2426' : ''}">
+            <a href="#" id="layout-menu-btn" class="menu-btn">
+                <i class="fa fa-bars"></i>
+            </a>
+
+            <!--<div class="topbar-search">
+                <input type="text" class="ui-widget"/>
+                <i class="fa fa-search"></i>
+            </div>-->
+<!--            <div class="layout-topbar-menu-wrapper" id="weather_wid"></div>-->
+<!--            <script>-->
+<!--                window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];-->
+<!--                window.myWidgetParam.push({id: 18,cityid: '8133777',-->
+<!--                appid: '290b3a7d1c8324e94add13a7da326cf2',-->
+<!--                units: 'metric',containerid: 'weather_wid',  });-->
+<!--            (function() {-->
+<!--                var script = document.createElement('script');script.async = true;-->
+<!--                script.charset = "utf-8";script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";-->
+<!--                var s = document.getElementsByTagName('script')[0];-->
+<!--                s.parentNode.insertBefore(script, s);-->
+<!--            })();-->
+<!--            </script>-->
+
+            <div class="layout-topbar-menu-wrapper">
+                <ul class="topbar-menu">
+                    <li class="profile-item">
+                        <a href="#">
+                            <p:commandLink onclick="PF('testOverLay').show();" id="ttt">
+                            <!--<p:graphicImage name="#{LoginBean.avatarGender()}" library="manhattan-layout"-->
+                                            <!--styleClass="rcorners1"/>-->
+
+                                <h:graphicImage id="topAvatar" value="data:image/jpg;base64,#{loginBean.avatarGender(loginBean.user)}" styleClass="rcorners1"/>
+
+
+                            <span class="topbar-item-name profile-name">
+                                <p:outputLabel value="#{loginBean.user.idEmployee.employeeFname} #{loginBean.user.idEmployee.employeeLname}"/>
+                            </span>
+                            </p:commandLink>
+
+                        </a>
+
+                        <!--<a href="#" class="topbar-menu-btn"  >-->
+                        <!--&lt;!&ndash;<p:graphicImage name="images/avatar.png" library="manhattan-layout" id="tt"/>&ndash;&gt;-->
+
+                        <!--</a>-->
+
+
+                        <p:overlayPanel widgetVar="testOverLay" id="testOverLay" hideEffect="fade" for="ttt"
+                                        showEvent="click" style="width: 200px;margin-top: 20px">
+
+                            <!--<a href="#" class="rightpanel-btn">-->
+                            <i class="topbar-icon fa fa-fw fa-lock">
+                            </i>
+                            <h:commandLink value="Change Password" immediate="true"
+                                           action="/webContent/changePassword.jsf?faces-redirect=true"
+                                           style="font-size: medium;margin-left: 4px;width: 100%"/>
+                            <br/>
+                            <i class="topbar-icon fa fa-fw fa-home">
+                            </i>
+                            <h:commandLink value="Home Page" immediate="true"
+                                           action="/webContent/dashboard.jsf?faces-redirect=true"
+                                           style="font-size: medium;margin-left: 4px;width: 100%"/>
+                            <br/>
+                            <i class="topbar-icon fa fa-fw fa-gear">
+                            </i>
+                            <h:commandLink value="User Preferences" immediate="true"
+                                           action="/webContent/userpreferences.jsf?faces-redirect=true"
+                                           style="font-size: medium;margin-left: 4px;width: 100%"/>
+                            <br/>
+                            <i class="topbar-icon fa fa-fw fa-envelope-o ">
+                            </i>
+                            <h:commandLink value="Messages" immediate="true"
+                                           action="/webContent/messageUser.jsf?faces-redirect=true"
+                                           style="font-size: medium;margin-left: 4px;width: 100%"/>
+                            <br/>
+                            <i class="topbar-icon fa fa-fw fa-info">
+                            </i>
+                            <h:commandLink value="Varius Info" immediate="true"
+                                           action="/webContent/main.jsf?faces-redirect=true"
+                                           style="font-size: medium;margin-left: 4px;width: 100%"/>
+                            <br/>
+                            <i class="topbar-icon fa fa-fw fa-sign-out">
+                            </i>
+                            <h:commandLink value="Logout" immediate="true"
+                                           action="#{AposindesiBean.aposindesiUser}"
+                                           style="font-size: medium;margin-left: 4px;width: 100%"/>
+                        </p:overlayPanel>
+                    </li>
+
+                    <li>
+
+                        <a href="#"
+                           onclick="PF('sidebar2').show();PF('accordion').select(1);PF('accordion').unselect(0)">
+                            <i class="topbar-icon swing fa fa-fw fa-envelope-o"></i>
+                            <span class="topbar-badge rubberBand" style="background: #{MessagesBean.noMessages eq 0 ? '' : 'red'}"
+                                  jsf:id="txt_count">#{messagesBean.noMessages eq 0 ? '0' : messagesBean.noMessages}</span>
+                            <span class="topbar-item-name">Messages</span>
+                        </a>
+
+                        <p:outputPanel deferred="true" deferredMode="visible">
+                        <ui:include src="messages.xhtml"/>
+                        </p:outputPanel>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </h:form>
+
+</ui:composition>
