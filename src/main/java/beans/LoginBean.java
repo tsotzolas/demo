@@ -123,12 +123,7 @@ public class LoginBean implements Serializable {
 
 
             Object expDays;
-            PASS_PERIOD = 0;
-            expDays = db.dbTransactions.getObjectsBySqlQry1("SELECT globalparamValue FROM tblglobalparam WHERE globalparamDesc= 'passPeriod'");
-            if (expDays != null && expDays instanceof String) {
-                PASS_PERIOD = Integer.parseInt((String) expDays);
-                if(PASS_PERIOD ==0) PASS_PERIOD = 36500;//αν έχει δηλωθεί 0 τότε το βάζουμε 100 χρόνια (36500 ημέρες)
-            }
+            PASS_PERIOD = 15;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -278,12 +273,7 @@ public class LoginBean implements Serializable {
             }
 
             Object userLockout;
-            LOCK_OUT = 0;
-            userLockout = db.dbTransactions.getObjectsBySqlQry1("SELECT globalparamValue FROM tblglobalparam WHERE globalparamDesc = 'passLockout'");
-            if (userLockout != null && userLockout instanceof String) {
-                LOCK_OUT = Integer.parseInt((String) userLockout);
-                if(LOCK_OUT.equals(0)) LOCK_OUT = 10000;//αν έχει δηλωθεί 0 τότε το βάζουμε 10000 λάθος προσπάθειες
-            }
+            LOCK_OUT = 5;
 
             //Ελέγχω αν έχει λήξει ο λογαριασμός
             LocalDateTime curdate = LocalDateTime.now();
